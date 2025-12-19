@@ -1,4 +1,3 @@
-# Impact Ledger
 
 ## Cardano-Powered Community Impact Verification System
 
