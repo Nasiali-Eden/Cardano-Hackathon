@@ -1,0 +1,24 @@
+// Patch script to add namespace to play_integrity_flutter plugin
+// This is applied in android/build.gradle via: apply from: "patch_play_integrity.gradle"
+
+gradle.projectsEvaluated {
+    tasks.all { task ->
+        if (task.name.contains("play_integrity_flutter")) {
+            task.doFirst {
+                println "Patching play_integrity_flutter namespace..."
+            }
+        }
+    }
+}
+
+// Alternative: Configure all library modules to have a default namespace
+subprojects { project ->
+    if (project.name == "play_integrity_flutter" || project.plugins.hasPlugin("com.android.library")) {
+        project.afterEvaluate {
+            if (!project.android.namespace) {
+                project.android.namespace = "com.example.play_integrity_flutter"
+                println "Applied namespace to ${project.name}"
+            }
+        }
+    }
+}

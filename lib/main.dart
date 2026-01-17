@@ -3,7 +3,6 @@ import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:play_integrity_flutter/play_integrity_flutter.dart';
 import 'package:provider/provider.dart';
 import 'Models/user.dart';
 import 'Services/Authentication/auth.dart';
@@ -46,19 +45,6 @@ Future<void> initializeFirebase() async {
   }
 }
 
-/// Initialize Play Integrity API
-Future<void> initializePlayIntegrity() async {
-  try {
-    final playIntegrity = PlayIntegrityFlutter();
-
-    // Debug logging for Play Integrity instance
-    debugPrint('Play Integrity initialized successfully: $playIntegrity');
-  } catch (e, stackTrace) {
-    debugPrint('Play Integrity initialization error: $e');
-    debugPrint(stackTrace.toString());
-  }
-}
-
 class ErrorApp extends StatelessWidget {
   const ErrorApp({super.key});
 
@@ -88,7 +74,6 @@ class ErrorApp extends StatelessWidget {
                 onPressed: () async {
                   try {
                     await initializeFirebase();
-                    await initializePlayIntegrity();
                     runApp(const MyApp());
                   } catch (error) {
                     debugPrint('Reinitialization failed: $error');

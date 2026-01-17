@@ -1,7 +1,23 @@
+apply from: "patch_play_integrity.gradle"
+
 allprojects {
     repositories {
         google()
         mavenCentral()
+    }
+}
+
+// Enforce Java 11 for all subprojects
+subprojects {
+    afterEvaluate { project ->
+        if (project.plugins.hasPlugin("com.android.library") || project.plugins.hasPlugin("com.android.application")) {
+            project.android {
+                compileOptions {
+                    sourceCompatibility = JavaVersion.VERSION_11
+                    targetCompatibility = JavaVersion.VERSION_11
+                }
+            }
+        }
     }
 }
 

@@ -64,7 +64,8 @@ dependencies:
   geojson_vi: ^2.2.5
 
   # Security & Integrity
-  play_integrity_flutter: ^0.0.1
+  # Removed play_integrity_flutter (0.0.1 incompatible with AGP 8.7.3)
+  # Using Firebase App Check instead (already configured)
 
   # Splash Screen & App Icons
   flutter_native_splash: ^2.4.4
