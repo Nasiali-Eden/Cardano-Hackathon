@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:147547439386:android:713fe35a85d60f6fcb2ca3",
+        "mobilesdk_app_id": "1:147547439386:android:1b464990fb396b6bcb2ca3",
         "android_client_info": {
-          "package_name": "com.example.city_watch"
+          "package_name": "com.impactledger.app"
         }
       },
       "oauth_client": [],

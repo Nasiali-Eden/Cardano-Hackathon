@@ -1,5 +1,6 @@
-import 'package:city_watch/Shared/Inputs/post_incident.dart';
-import 'package:city_watch/User/Home/HomeScreen/read_article.dart';
+import '../../../Community/Activities/activities_list.dart';
+import '../../../Community/Contributions/log_contribution.dart';
+import 'read_article.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -31,22 +32,23 @@ class UserHomeScreenState extends State<UserHomeScreen> {
           value: 'report',
           child: ListTile(
             leading: const Icon(Icons.report, color: Colors.deepPurpleAccent),
-            title: const Text('Report Incident'),
+            title: const Text('Log Contribution'),
           ),
         ),
         PopupMenuItem(
           value: 'volunteer',
           child: ListTile(
             leading: const Icon(Icons.volunteer_activism, color: Colors.teal),
-            title: const Text('Become a Volunteer'),
+            title: const Text('Browse Activities'),
           ),
         ),
       ],
     ).then((value) {
       if (value == 'report') {
-        _navigatorKey.currentState?.pushNamed('/postIncident');
+        Navigator.of(context, rootNavigator: true)
+            .pushNamed('/contributions/log');
       } else if (value == 'volunteer') {
-        _navigatorKey.currentState?.pushNamed('/volunteer');
+        Navigator.of(context, rootNavigator: true).pushNamed('/activities');
       }
     });
   }
@@ -82,13 +84,15 @@ class UserHomeScreenState extends State<UserHomeScreen> {
             ),
             actions: [
               IconButton(
-                icon: const Icon(Icons.add_circle, color: Colors.deepPurpleAccent),
+                icon: const Icon(Icons.add_circle,
+                    color: Colors.deepPurpleAccent),
                 onPressed: () {
-                  RenderBox? overlay =
-                  Overlay.of(context).context.findRenderObject() as RenderBox?;
-                  Offset offset =
-                      overlay?.localToGlobal(overlay.size.topRight(Offset.zero)) ??
-                          Offset.zero;
+                  RenderBox? overlay = Overlay.of(context)
+                      .context
+                      .findRenderObject() as RenderBox?;
+                  Offset offset = overlay
+                          ?.localToGlobal(overlay.size.topRight(Offset.zero)) ??
+                      Offset.zero;
                   _showMenu(context, offset);
                 },
               ),
@@ -106,14 +110,14 @@ class UserHomeScreenState extends State<UserHomeScreen> {
             case '/':
               builder = (BuildContext _) => const HomeContent();
               break;
-            case '/postIncident':
-              builder = (BuildContext _) => const PostIncident();
+            case '/logContribution':
+              builder = (BuildContext _) => const LogContributionScreen();
               break;
-            case '/volunteer':
-              builder = (BuildContext _) => const VolunteerReg();
+            case '/activities':
+              builder = (BuildContext _) => const ActivitiesListScreen();
               break;
             case '/readArticle':
-            // Pass the article data via settings.arguments.
+              // Pass the article data via settings.arguments.
               builder = (BuildContext _) => ReadArticle(
                   article: settings.arguments as Map<String, dynamic>);
               break;
@@ -184,15 +188,18 @@ class HomeContent extends StatelessWidget {
                   crossAxisCount: 3, // Three articles per row.
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
-                  childAspectRatio: 0.7, // Adjusted aspect ratio for three columns.
+                  childAspectRatio:
+                      0.7, // Adjusted aspect ratio for three columns.
                 ),
                 itemCount: articles.length,
                 itemBuilder: (context, index) {
                   final articleData =
-                  articles[index].data() as Map<String, dynamic>;
-                  final String coverPhotoUrl = articleData['coverPhotoUrl'] ?? '';
+                      articles[index].data() as Map<String, dynamic>;
+                  final String coverPhotoUrl =
+                      articleData['coverPhotoUrl'] ?? '';
                   final String headline = articleData['headline'] ?? 'No Title';
-                  final Timestamp? timestamp = articleData['timestamp'] as Timestamp?;
+                  final Timestamp? timestamp =
+                      articleData['timestamp'] as Timestamp?;
                   final String formattedDate = timestamp != null
                       ? "${timestamp.toDate().year}-${timestamp.toDate().month}-${timestamp.toDate().day}"
                       : "Unknown Date";
@@ -204,7 +211,6 @@ class HomeContent extends StatelessWidget {
                         '/readArticle',
                         arguments: articleData,
                       );
-
                     },
                     child: Card(
                       color: Colors.white,
@@ -222,16 +228,16 @@ class HomeContent extends StatelessWidget {
                                   top: Radius.circular(0)),
                               child: coverPhotoUrl.isNotEmpty
                                   ? Image.network(
-                                coverPhotoUrl,
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                              )
+                                      coverPhotoUrl,
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
+                                    )
                                   : Container(
-                                color: Colors.white,
-                                width: double.infinity,
-                                child: const Icon(Icons.image,
-                                    size: 50, color: Colors.white),
-                              ),
+                                      color: Colors.white,
+                                      width: double.infinity,
+                                      child: const Icon(Icons.image,
+                                          size: 50, color: Colors.white),
+                                    ),
                             ),
                           ),
                           // Truncated headline.

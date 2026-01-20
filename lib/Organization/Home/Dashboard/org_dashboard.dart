@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:city_watch/Shared/Inputs/post_incident.dart';
+import '../../../Shared/Inputs/post_incident.dart';
 import '../../Articles/post_article.dart';
 
 class OrgDashboard extends StatefulWidget {
@@ -56,6 +56,11 @@ class OrgDashboardState extends State<OrgDashboard> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      Navigator.of(context, rootNavigator: true).pushReplacementNamed('/home');
+    });
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(

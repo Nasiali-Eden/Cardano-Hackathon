@@ -18,5 +18,5 @@ plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
 }
 
-rootProject.name = "city_watch"
+rootProject.name = "impact_trail"
 include("app")

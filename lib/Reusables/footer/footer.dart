@@ -1,6 +1,5 @@
-import 'package:city_watch/Shared/Pages/login.dart';
+import '../../Shared/Pages/login.dart';
 import 'package:flutter/material.dart';
-
 
 class Footer extends StatelessWidget {
   const Footer({super.key});
@@ -10,7 +9,6 @@ class Footer extends StatelessWidget {
     return Column(
       children: [
         const SizedBox(height: 20),
-
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -23,8 +21,7 @@ class Footer extends StatelessWidget {
               child: const Text(
                 'Sign In',
                 style: TextStyle(
-                    color: Colors.blueAccent,
-                    fontWeight: FontWeight.bold),
+                    color: Colors.blueAccent, fontWeight: FontWeight.bold),
               ),
               onTap: () {
                 Navigator.pushReplacement(

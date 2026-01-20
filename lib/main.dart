@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_app_check/firebase_app_check.dart';
+// import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'Community/Activities/activities_list.dart';
@@ -34,34 +33,34 @@ import 'Shared/Pages/welcome_screen.dart';
 import 'Shared/theme/app_theme.dart';
 import 'firebase_options.dart';
 
+/// Initialize Firebase safely (only once)
 Future<void> initializeFirebase() async {
   try {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+    if (Firebase.apps.isEmpty) {
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
 
-    // Manually initialize App Check
-    const isDebug = kDebugMode; // Detect if app is in debug mode
-
-    await FirebaseAppCheck.instance.activate(
-      androidProvider: isDebug
-          ? AndroidProvider.debug // Use debug provider for debug mode
-          : AndroidProvider.playIntegrity, // Use Play Integrity for release
-    );
-
-    // Log the debug token (for debugging purposes)
-    if (isDebug) {
-      final token = await FirebaseAppCheck.instance.getToken(true);
-      debugPrint('Debug Token: $token');
+      // App Check is disabled for now
+      // const isDebug = kDebugMode;
+      // await FirebaseAppCheck.instance.activate(
+      //   androidProvider: isDebug ? AndroidProvider.debug : AndroidProvider.playIntegrity,
+      // );
+      // if (isDebug) {
+      //   final token = await FirebaseAppCheck.instance.getToken(true);
+      //   debugPrint('Debug Token: $token');
+      // }
+    } else {
+      debugPrint('Firebase already initialized');
     }
 
-    // Configure Firestore settings
+    // Firestore settings
     FirebaseFirestore.instance.settings = const Settings(
       persistenceEnabled: true,
       cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
     );
 
-    debugPrint('Firebase initialized successfully with App Check');
+    debugPrint('Firebase initialized successfully');
   } catch (e, stackTrace) {
     debugPrint('Firebase initialization error: $e');
     debugPrint(stackTrace.toString());
@@ -93,8 +92,7 @@ class ErrorApp extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               ElevatedButton(
-                style:
-                    ElevatedButton.styleFrom(backgroundColor: Colors.grey[50]),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.grey[50]),
                 onPressed: () async {
                   try {
                     await initializeFirebase();

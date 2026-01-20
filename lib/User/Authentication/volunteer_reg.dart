@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:city_watch/User/Authentication/volunteer_service.dart';
+import 'volunteer_service.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -118,7 +118,8 @@ class _VolunteerRegState extends State<VolunteerReg> {
               children: [
                 const SizedBox(height: 20),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
                   height: 35,
                   color: Colors.teal[700],
                   child: const Text(
@@ -288,14 +289,14 @@ class _VolunteerRegState extends State<VolunteerReg> {
                   const SizedBox(width: 10),
                   _selectedPhoto != null
                       ? ClipRRect(
-                    borderRadius: BorderRadius.circular(50),
-                    child: Image.file(
-                      _selectedPhoto!,
-                      width: 50,
-                      height: 50,
-                      fit: BoxFit.cover,
-                    ),
-                  )
+                          borderRadius: BorderRadius.circular(50),
+                          child: Image.file(
+                            _selectedPhoto!,
+                            width: 50,
+                            height: 50,
+                            fit: BoxFit.cover,
+                          ),
+                        )
                       : const SizedBox(),
                 ],
               ),

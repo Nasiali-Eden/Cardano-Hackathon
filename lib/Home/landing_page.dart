@@ -1,5 +1,5 @@
-import 'package:city_watch/Organization/Authentication/org_registration.dart';
-import 'package:city_watch/User/Authentication/user_registration.dart';
+import '../Organization/Authentication/org_registration.dart';
+import '../User/Authentication/user_registration.dart';
 import 'package:flutter/material.dart';
 import '../Reusables/footer/logo.dart';
 import '../Shared/Pages/login.dart';
@@ -9,6 +9,11 @@ class LandingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Navigator.of(context, rootNavigator: true)
+          .pushReplacementNamed('/splash');
+    });
+
     final double deviceWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
@@ -20,9 +25,7 @@ class LandingPage extends StatelessWidget {
             top: 150,
             left: 0,
             right: 0,
-            child: Center(
-              child: Image.asset('pngs/logotext.png', scale: 1.5)
-            ),
+            child: Center(child: Image.asset('pngs/logotext.png', scale: 1.5)),
           ),
           // Center section with containers
           Center(

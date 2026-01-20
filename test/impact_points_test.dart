@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:city_watch/Services/Contributions/contribution_service.dart';
+import 'package:impact_trail/Services/Contributions/contribution_service.dart';
 
 void main() {
   test('estimateImpactPoints: Time contribution', () {

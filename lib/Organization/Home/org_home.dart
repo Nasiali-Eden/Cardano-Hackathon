@@ -1,7 +1,7 @@
-import 'package:city_watch/Organization/Home/Dashboard/org_dashboard.dart';
-import 'package:city_watch/Organization/Home/Profile/org_profile.dart';
-import 'package:city_watch/Organization/Home/Volunteers/org_volunteers.dart';
-import 'package:city_watch/User/Home/Reports/user_reports.dart';
+import 'Dashboard/org_dashboard.dart';
+import 'Profile/org_profile.dart';
+import 'Volunteers/org_volunteers.dart';
+import '../../Community/Impact/impact_dashboard.dart';
 import 'package:flutter/material.dart';
 
 class OrganizationHome extends StatefulWidget {
@@ -16,7 +16,7 @@ class _OrganizationHomeState extends State<OrganizationHome> {
 
   // GlobalKey for OrgDashboard (the first page)
   final GlobalKey<OrgDashboardState> dashboardKey =
-  GlobalKey<OrgDashboardState>();
+      GlobalKey<OrgDashboardState>();
 
   late final List<Widget> pages;
 
@@ -25,7 +25,7 @@ class _OrganizationHomeState extends State<OrganizationHome> {
     super.initState();
     pages = [
       OrgDashboard(key: dashboardKey),
-      const UserReports(),
+      const ImpactDashboardScreen(),
       const OrgVolunteers(),
       const OrgProfile(),
     ];
@@ -58,7 +58,7 @@ class _OrganizationHomeState extends State<OrganizationHome> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               _buildNavItem(Icons.apps, "Dashboard", 0),
-              _buildNavItem(Icons.bolt_outlined, "Incidents", 1),
+              _buildNavItem(Icons.bolt_outlined, "Impact", 1),
               _buildNavItem(Icons.construction, "Volunteers", 2),
               _buildNavItem(Icons.person_2_outlined, "Profile", 3),
             ],

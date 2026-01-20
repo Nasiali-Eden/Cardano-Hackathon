@@ -1,7 +1,7 @@
-import 'package:city_watch/User/Home/HomeScreen/user_homescreen.dart';
-import 'package:city_watch/User/Home/Reports/user_reports.dart';
-import 'package:city_watch/User/Home/Help/user_help.dart';
-import 'package:city_watch/User/Home/Profile/user_profile.dart';
+import 'HomeScreen/user_homescreen.dart';
+import 'Help/user_help.dart';
+import 'Profile/user_profile.dart';
+import '../../Community/Impact/impact_dashboard.dart';
 import 'package:flutter/material.dart';
 
 class UserHome extends StatefulWidget {
@@ -15,7 +15,8 @@ class _UserHomeState extends State<UserHome> {
   int currentPage = 0;
 
   // Create a global key for the UserHomeScreen so we can reset its nested Navigator.
-  final GlobalKey<UserHomeScreenState> homeKey = GlobalKey<UserHomeScreenState>();
+  final GlobalKey<UserHomeScreenState> homeKey =
+      GlobalKey<UserHomeScreenState>();
 
   late final List<Widget> pages;
 
@@ -24,7 +25,7 @@ class _UserHomeState extends State<UserHome> {
     super.initState();
     pages = [
       UserHomeScreen(key: homeKey),
-      const UserReports(),
+      const ImpactDashboardScreen(),
       const UserHelp(),
       const UserProfile(),
     ];
@@ -39,7 +40,8 @@ class _UserHomeState extends State<UserHome> {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Colors.deepPurpleAccent.withAlpha((0.05 * 255).toInt()), // Shadow color
+              color: Colors.deepPurpleAccent
+                  .withAlpha((0.05 * 255).toInt()), // Shadow color
               spreadRadius: 2, // Spread radius
               blurRadius: 10, // Blur radius
               offset: const Offset(0, -2), // Shadow position
@@ -51,7 +53,8 @@ class _UserHomeState extends State<UserHome> {
           color: Colors.white, // Background color of the BottomAppBar
           height: 85.0,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Evenly distribute icons
+            mainAxisAlignment:
+                MainAxisAlignment.spaceEvenly, // Evenly distribute icons
             children: <Widget>[
               Column(
                 mainAxisSize: MainAxisSize.min,
@@ -103,7 +106,7 @@ class _UserHomeState extends State<UserHome> {
                     },
                   ),
                   Text(
-                    'Incidents',
+                    'Impact',
                     style: TextStyle(
                       fontSize: 11.0,
                       color: currentPage == 1

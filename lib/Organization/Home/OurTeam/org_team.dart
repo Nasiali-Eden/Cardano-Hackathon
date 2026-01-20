@@ -1,4 +1,4 @@
-import 'package:city_watch/Organization/Home/OurTeam/add_team.dart';
+import 'add_team.dart';
 import 'package:flutter/material.dart';
 
 class OrgTeam extends StatefulWidget {
@@ -22,7 +22,8 @@ class _OrgTeamState extends State<OrgTeam> {
             color: Colors.white,
             boxShadow: [
               BoxShadow(
-                color: Colors.deepPurpleAccent.withAlpha((0.05 * 255).toInt()), // Shadow color with opacity
+                color: Colors.deepPurpleAccent.withAlpha(
+                    (0.05 * 255).toInt()), // Shadow color with opacity
                 blurRadius: 4.0, // Adjust the blur radius
                 offset: Offset(0, 3), // Position of the shadow
               ),
@@ -57,8 +58,8 @@ class _OrgTeamState extends State<OrgTeam> {
               padding: EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: Colors.green[700],
-                  borderRadius: BorderRadius.circular(10),
-                 ),
+                borderRadius: BorderRadius.circular(10),
+              ),
               child: GestureDetector(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -81,7 +82,6 @@ class _OrgTeamState extends State<OrgTeam> {
                 },
               ),
             ),
-
             SizedBox(
               height: 4,
             ),

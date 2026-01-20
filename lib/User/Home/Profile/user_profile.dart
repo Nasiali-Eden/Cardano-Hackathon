@@ -17,7 +17,7 @@ class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+        backgroundColor: Colors.white,
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(56.0), // Set the height of the AppBar
           child: Container(
@@ -34,7 +34,7 @@ class _UserProfileState extends State<UserProfile> {
             ),
             child: AppBar(
               backgroundColor:
-              Colors.transparent, // Make the AppBar background transparent
+                  Colors.transparent, // Make the AppBar background transparent
               elevation: 0, // Remove default shadow
               title: Text(
                 'Profile',
@@ -67,14 +67,13 @@ class _UserProfileState extends State<UserProfile> {
                       child: Text(
                         'Account Management',
                         style: TextStyle(
-                            color: Colors.deepPurpleAccent, fontWeight: FontWeight.w500),
+                            color: Colors.deepPurpleAccent,
+                            fontWeight: FontWeight.w500),
                       ),
                     ),
                     Expanded(
                       child: Divider(
-                        thickness: 0.08,
-                        color: Colors.deepPurpleAccent
-                      ),
+                          thickness: 0.08, color: Colors.deepPurpleAccent),
                     ),
                   ],
                 ),
@@ -86,7 +85,7 @@ class _UserProfileState extends State<UserProfile> {
                 padding: const EdgeInsets.symmetric(
                     horizontal: 15, vertical: 10), // Adjust padding
                 margin:
-                const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
+                    const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(6),
                   color: Colors.grey[50],
@@ -167,8 +166,6 @@ class _UserProfileState extends State<UserProfile> {
                 height: 10,
               ),
 
-
-
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 18.0),
                 child: Row(
@@ -182,9 +179,10 @@ class _UserProfileState extends State<UserProfile> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
                       child: Text(
-                        'About City Watch',
+                        'About Impact Ledger',
                         style: TextStyle(
-                            color:Colors.deepPurpleAccent, fontWeight: FontWeight.w500),
+                            color: Colors.deepPurpleAccent,
+                            fontWeight: FontWeight.w500),
                       ),
                     ),
                     Expanded(
@@ -200,7 +198,7 @@ class _UserProfileState extends State<UserProfile> {
                 padding: const EdgeInsets.symmetric(
                     horizontal: 15, vertical: 10), // Adjust padding
                 margin:
-                const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
+                    const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(6),
                   color: Colors.grey[50],
@@ -212,7 +210,7 @@ class _UserProfileState extends State<UserProfile> {
                       children: [
                         Expanded(
                           child: Text(
-                            "How to Report an incident",
+                            "How to log a contribution",
                             style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.w400,
@@ -227,7 +225,6 @@ class _UserProfileState extends State<UserProfile> {
                         ),
                       ],
                     ),
-
                   ],
                 ),
               ),
@@ -237,8 +234,7 @@ class _UserProfileState extends State<UserProfile> {
               Container(
                 padding: const EdgeInsets.symmetric(
                     horizontal: 12, vertical: 8), // Adjust padding
-                margin:
-                const EdgeInsets.symmetric(horizontal: 24, vertical: 5),
+                margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 5),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(6),
                   color: Colors.grey[50],
@@ -247,31 +243,27 @@ class _UserProfileState extends State<UserProfile> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                      child: Text(
-                        'Email Us',
-                        style: TextStyle(color:maroon)
-                      ),
+                      child: Text('Email Us', style: TextStyle(color: maroon)),
                     ),
                   ],
                 ),
               ),
 
-
               GestureDetector(
                 onTap: () async {
                   await _authService.signOut();
-                  if (!mounted) return; // Prevents calling setState after dispose
+                  if (!mounted)
+                    return; // Prevents calling setState after dispose
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => LoginPage()),
                   );
                 },
-
                 child: Container(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 12, vertical: 8), // Adjust padding
                   margin:
-                  const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(6),
                     color: Colors.grey[50],
@@ -294,7 +286,6 @@ class _UserProfileState extends State<UserProfile> {
               ), // You can add more widgets here as needed
             ],
           ),
-        )
-    );
+        ));
   }
 }

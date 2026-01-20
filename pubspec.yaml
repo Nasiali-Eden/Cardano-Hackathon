@@ -1,4 +1,4 @@
-name: city_watch
+name: impact_trail
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -31,12 +31,13 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # Firebase dependencies
-  firebase_auth: ^5.1.4
-  firebase_core: ^3.3.0
-  firebase_storage: ^12.3.4
-  cloud_firestore: ^5.2.1
-  firebase_app_check: ^0.3.1+7
+  # Firebase
+  firebase_core: any
+  firebase_auth: any
+  cloud_firestore: any
+  firebase_analytics: any
+  firebase_storage: any
+  firebase_messaging: any
 
   # UI & Utility dependencies
   shimmer: ^3.0.0  # Used for loading placeholders
@@ -64,10 +65,6 @@ dependencies:
   flutter_polyline_points: ^2.1.0
   geolocator: ^13.0.3
   geojson_vi: ^2.2.5
-
-  # Security & Integrity
-  # Removed play_integrity_flutter (0.0.1 incompatible with AGP 8.7.3)
-  # Using Firebase App Check instead (already configured)
 
   # Splash Screen & App Icons
   flutter_native_splash: ^2.4.4

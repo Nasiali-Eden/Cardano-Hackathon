@@ -51,6 +51,7 @@ class _PostIncidentState extends State<PostIncident> {
       });
     }
   }
+
   void _postIncident() {
     if (_formKey.currentState!.validate() &&
         _selectedType.isNotEmpty &&
@@ -70,9 +71,14 @@ class _PostIncidentState extends State<PostIncident> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      Navigator.of(context, rootNavigator: true)
+          .pushReplacementNamed('/contributions/log');
+    });
+
     return Scaffold(
       backgroundColor: Colors.grey[100], // Light background
       body: SingleChildScrollView(

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:city_watch/Organization/Home/Dashboard/org_dashboard.dart';
+import '../Home/Dashboard/org_dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'article_service.dart';
@@ -70,7 +70,6 @@ class _PostArticleState extends State<PostArticle> {
             MaterialPageRoute(builder: (context) => const OrgDashboard()),
           );
         });
-
       } catch (e) {
         _showSnackBar("Failed to post article: ${e.toString()}");
       } finally {
@@ -121,7 +120,8 @@ class _PostArticleState extends State<PostArticle> {
       color: Colors.teal[700],
       child: const Text(
         'Create Article',
-        style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w800),
+        style: TextStyle(
+            color: Colors.white, fontSize: 15, fontWeight: FontWeight.w800),
       ),
     );
   }
@@ -133,9 +133,12 @@ class _PostArticleState extends State<PostArticle> {
         controller: _headlineController,
         decoration: const InputDecoration(
           labelText: '1. Headline',
-          labelStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.w400),
-          enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black54)),
-          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black87)),
+          labelStyle:
+              TextStyle(color: Colors.black, fontWeight: FontWeight.w400),
+          enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.black54)),
+          focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.black87)),
         ),
         validator: (value) {
           if (value == null || value.isEmpty) return 'Please add the headline';
@@ -151,7 +154,8 @@ class _PostArticleState extends State<PostArticle> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("2. Write your article", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+          const Text("2. Write your article",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
           const SizedBox(height: 8),
           TextFormField(
             controller: _textController,
@@ -162,7 +166,8 @@ class _PostArticleState extends State<PostArticle> {
               border: OutlineInputBorder(),
             ),
             validator: (value) {
-              if (value == null || value.trim().isEmpty) return "Text cannot be empty.";
+              if (value == null || value.trim().isEmpty)
+                return "Text cannot be empty.";
               int wordCount = value.trim().split(RegExp(r'\s+')).length;
               if (wordCount > 300) return "Text exceeds 300-word limit.";
               return null;
@@ -179,7 +184,8 @@ class _PostArticleState extends State<PostArticle> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("3. Select type", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+          const Text("3. Select type",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
           Column(
             children: _articleTypes.map((type) {
               return RadioListTile<String>(
@@ -205,27 +211,31 @@ class _PostArticleState extends State<PostArticle> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("4. Cover Photo", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+          const Text("4. Cover Photo",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
           const SizedBox(height: 8),
           _coverPhoto != null
               ? ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.file(_coverPhoto!, height: 150, width: 150, fit: BoxFit.cover),
-          )
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.file(_coverPhoto!,
+                      height: 150, width: 150, fit: BoxFit.cover),
+                )
               : Container(
-            height: 150,
-            width: 150,
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: const Center(child: Icon(Icons.image, size: 50, color: Colors.grey)),
-          ),
+                  height: 150,
+                  width: 150,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Center(
+                      child: Icon(Icons.image, size: 50, color: Colors.grey)),
+                ),
           const SizedBox(height: 8),
           ElevatedButton(
             onPressed: _pickCoverPhoto,
             style: ElevatedButton.styleFrom(backgroundColor: Colors.teal),
-            child: const Text("Choose Cover Photo", style: TextStyle(color: Colors.white)),
+            child: const Text("Choose Cover Photo",
+                style: TextStyle(color: Colors.white)),
           ),
         ],
       ),
@@ -235,7 +245,9 @@ class _PostArticleState extends State<PostArticle> {
   Widget _buildPostButton() {
     return Center(
       child: ElevatedButton(
-        style: ElevatedButton.styleFrom(backgroundColor: Colors.deepPurpleAccent, padding: const EdgeInsets.all(15)),
+        style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.deepPurpleAccent,
+            padding: const EdgeInsets.all(15)),
         onPressed: _isPosting ? null : _postArticle,
         child: _isPosting
             ? const CircularProgressIndicator(color: Colors.white)

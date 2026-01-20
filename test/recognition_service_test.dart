@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:city_watch/Services/Recognition/recognition_service.dart';
+import 'package:impact_trail/Services/Recognition/recognition_service.dart';
 
 void main() {
   test('computeBadges: first contribution badge is earned', () {

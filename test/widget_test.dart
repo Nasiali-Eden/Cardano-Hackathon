@@ -8,7 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:city_watch/Community/Contributions/contribution_confirmation.dart';
+import 'package:impact_trail/Community/Contributions/contribution_confirmation.dart';
 
 void main() {
   testWidgets('Contribution confirmation shows points',

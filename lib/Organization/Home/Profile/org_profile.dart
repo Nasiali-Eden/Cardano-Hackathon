@@ -18,35 +18,36 @@ class _OrgProfileState extends State<OrgProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(56.0), // Set the height of the AppBar
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.deepPurpleAccent.withAlpha((0.05 * 255).toInt()), // Shadow color with opacity
-                blurRadius: 4.0, // Adjust the blur radius
-                offset: Offset(0, 3), // Position of the shadow
-              ),
-            ],
-          ),
-          child: AppBar(
-            backgroundColor:
-            Colors.transparent, // Make the AppBar background transparent
-            elevation: 0, // Remove default shadow
-            title: Text(
-              'Profile',
-              style: TextStyle(
-                color: Colors.deepPurpleAccent,
-                fontWeight: FontWeight.w500,
-                fontSize: 22,
+        backgroundColor: Colors.white,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(56.0), // Set the height of the AppBar
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.deepPurpleAccent.withAlpha(
+                      (0.05 * 255).toInt()), // Shadow color with opacity
+                  blurRadius: 4.0, // Adjust the blur radius
+                  offset: Offset(0, 3), // Position of the shadow
+                ),
+              ],
+            ),
+            child: AppBar(
+              backgroundColor:
+                  Colors.transparent, // Make the AppBar background transparent
+              elevation: 0, // Remove default shadow
+              title: Text(
+                'Profile',
+                style: TextStyle(
+                  color: Colors.deepPurpleAccent,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 22,
+                ),
               ),
             ),
           ),
         ),
-      ),
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,14 +68,13 @@ class _OrgProfileState extends State<OrgProfile> {
                       child: Text(
                         'Account Management',
                         style: TextStyle(
-                            color: Colors.deepPurpleAccent, fontWeight: FontWeight.w500),
+                            color: Colors.deepPurpleAccent,
+                            fontWeight: FontWeight.w500),
                       ),
                     ),
                     Expanded(
                       child: Divider(
-                          thickness: 0.08,
-                          color: Colors.deepPurpleAccent
-                      ),
+                          thickness: 0.08, color: Colors.deepPurpleAccent),
                     ),
                   ],
                 ),
@@ -86,7 +86,7 @@ class _OrgProfileState extends State<OrgProfile> {
                 padding: const EdgeInsets.symmetric(
                     horizontal: 15, vertical: 10), // Adjust padding
                 margin:
-                const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
+                    const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(6),
                   color: Colors.grey[50],
@@ -167,7 +167,6 @@ class _OrgProfileState extends State<OrgProfile> {
                 height: 10,
               ),
 
-
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 18.0),
                 child: Row(
@@ -183,7 +182,8 @@ class _OrgProfileState extends State<OrgProfile> {
                       child: Text(
                         'Notifications',
                         style: TextStyle(
-                            color: Colors.deepPurpleAccent, fontWeight: FontWeight.w500),
+                            color: Colors.deepPurpleAccent,
+                            fontWeight: FontWeight.w500),
                       ),
                     ),
                     Expanded(
@@ -202,7 +202,7 @@ class _OrgProfileState extends State<OrgProfile> {
                 padding: const EdgeInsets.symmetric(
                     horizontal: 15, vertical: 10), // Adjust padding
                 margin:
-                const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
+                    const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(6),
                   color: Colors.grey[50],
@@ -293,9 +293,10 @@ class _OrgProfileState extends State<OrgProfile> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
                       child: Text(
-                        'About City Watch',
+                        'About Impact Ledger',
                         style: TextStyle(
-                            color:Colors.deepPurpleAccent, fontWeight: FontWeight.w500),
+                            color: Colors.deepPurpleAccent,
+                            fontWeight: FontWeight.w500),
                       ),
                     ),
                     Expanded(
@@ -311,7 +312,7 @@ class _OrgProfileState extends State<OrgProfile> {
                 padding: const EdgeInsets.symmetric(
                     horizontal: 15, vertical: 10), // Adjust padding
                 margin:
-                const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
+                    const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(6),
                   color: Colors.grey[50],
@@ -323,7 +324,7 @@ class _OrgProfileState extends State<OrgProfile> {
                       children: [
                         Expanded(
                           child: Text(
-                            "How to Report an incident",
+                            "How to log a contribution",
                             style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.w400,
@@ -338,7 +339,6 @@ class _OrgProfileState extends State<OrgProfile> {
                         ),
                       ],
                     ),
-
                   ],
                 ),
               ),
@@ -346,22 +346,21 @@ class _OrgProfileState extends State<OrgProfile> {
                 height: 20,
               ),
 
-
               GestureDetector(
                 onTap: () async {
                   await _authService.signOut();
-                  if (!mounted) return; // Prevents calling setState after dispose
+                  if (!mounted)
+                    return; // Prevents calling setState after dispose
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => LoginPage()),
                   );
                 },
-
                 child: Container(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 12, vertical: 8), // Adjust padding
                   margin:
-                  const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(6),
                     color: Colors.grey[50],
@@ -384,7 +383,6 @@ class _OrgProfileState extends State<OrgProfile> {
               ), // You can add more widgets here as needed
             ],
           ),
-        )
-    );
+        ));
   }
 }
