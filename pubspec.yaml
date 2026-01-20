@@ -44,6 +44,8 @@ dependencies:
   intl: ^0.20.1  # Internationalization
   provider: ^6.1.2
   shared_preferences: ^2.3.5  # Local storage
+  fl_chart: ^0.66.2
+  cached_network_image: ^3.3.1
 
   # Image handling
   image_picker: any

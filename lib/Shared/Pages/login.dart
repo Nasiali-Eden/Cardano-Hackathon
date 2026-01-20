@@ -1,17 +1,12 @@
-import 'package:city_watch/Organization/Home/org_home.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../Home/landing_page.dart';
-import '../../Reusables/components/square_tile.dart';
 import '../../Reusables/footer/logo.dart';
 import '../../Services/Authentication/auth.dart';
-import '../../User/Home/user_home.dart';
 
 class LoginPage extends StatefulWidget {
-
   const LoginPage({super.key});
 
   @override
@@ -19,7 +14,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   bool _isObscure = true;
   bool visible = false;
   final _formkey = GlobalKey<FormState>();
@@ -34,7 +28,8 @@ class _LoginPageState extends State<LoginPage> {
       body: SafeArea(
         child: Stack(
           children: [
-            SingleChildScrollView( // Ensures scrolling for all content
+            SingleChildScrollView(
+              // Ensures scrolling for all content
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -60,8 +55,8 @@ class _LoginPageState extends State<LoginPage> {
                             controller: emailController,
                             decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors.grey.shade100),
+                                borderSide:
+                                    BorderSide(color: Colors.grey.shade100),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
@@ -77,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
                                 return "Email cannot be empty";
                               }
                               if (!RegExp(
-                                  "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
+                                      "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
                                   .hasMatch(value)) {
                                 return "Please enter a valid email";
                               }
@@ -93,8 +88,9 @@ class _LoginPageState extends State<LoginPage> {
                             obscureText: _isObscure,
                             decoration: InputDecoration(
                               suffixIcon: IconButton(
-                                icon: Icon(_isObscure ? Icons.visibility : Icons
-                                    .visibility_off),
+                                icon: Icon(_isObscure
+                                    ? Icons.visibility
+                                    : Icons.visibility_off),
                                 onPressed: () {
                                   setState(() {
                                     _isObscure = !_isObscure;
@@ -104,8 +100,8 @@ class _LoginPageState extends State<LoginPage> {
                               labelText: 'Password',
                               labelStyle: TextStyle(color: Colors.deepPurple),
                               enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors.grey.shade100),
+                                borderSide:
+                                    BorderSide(color: Colors.grey.shade100),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
@@ -162,8 +158,8 @@ class _LoginPageState extends State<LoginPage> {
                           } catch (e) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text(
-                                    'Error occurred during sign in: $e'),
+                                content:
+                                    Text('Error occurred during sign in: $e'),
                               ),
                             );
                           }
@@ -194,14 +190,15 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(height: 10),
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 25, vertical: 5),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text(
                           'Forgot Password?',
-                          style: TextStyle(color: Colors.blueAccent,
+                          style: TextStyle(
+                              color: Colors.blueAccent,
                               fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -213,7 +210,9 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       Text(
                         'Not a Member?',
-                        style: TextStyle(color: Colors.grey[700],),
+                        style: TextStyle(
+                          color: Colors.grey[700],
+                        ),
                       ),
                       const SizedBox(width: 4),
                       GestureDetector(
@@ -224,11 +223,7 @@ class _LoginPageState extends State<LoginPage> {
                               fontWeight: FontWeight.bold),
                         ),
                         onTap: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const LandingPage()),
-                          );
+                          Navigator.pushReplacementNamed(context, '/welcome');
                         },
                       ),
                     ],
@@ -252,57 +247,34 @@ class _LoginPageState extends State<LoginPage> {
       print('Routing user with ID: ${user.uid}');
     }
 
-    // Check vendors collection
     FirebaseFirestore.instance
-        .collection('Organizations')
+        .collection('Users')
         .doc(user.uid)
         .get()
-        .then((DocumentSnapshot OrgSnapshot) {
+        .then((DocumentSnapshot userSnapshot) {
       if (kDebugMode) {
-        print('Org snapshot exists: ${OrgSnapshot.exists}');
+        print('User snapshot exists: ${userSnapshot.exists}');
       }
 
-      if (OrgSnapshot.exists) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const OrganizationHome()),
-        );
+      if (!userSnapshot.exists) {
+        Navigator.pushReplacementNamed(context, '/join');
+        return;
+      }
+
+      final data = userSnapshot.data() as Map<String, dynamic>?;
+      final acceptedAt = data?['guidelinesAcceptedAt'];
+
+      if (acceptedAt == null) {
+        Navigator.pushReplacementNamed(context, '/guidelines');
       } else {
-        // Check buyers collection
-        FirebaseFirestore.instance
-            .collection('Users')
-            .doc(user.uid)
-            .get()
-            .then((DocumentSnapshot UserSnapshot) {
-          if (kDebugMode) {
-            print('User Snapshot exists: ${UserSnapshot.exists}');
-          }
-
-          if (UserSnapshot.exists) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const UserHome()),
-            );
-          } else {
-            print('User does not exist in either collection');
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                  content: Text('User does not exist in either collection')),
-            );
-          }
-        })
-            .catchError((error) {
-          print("Error fetching User data: $error");
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error fetching User data: $error')),
-          );
-        });
+        Navigator.pushReplacementNamed(context, '/home');
       }
-    })
-        .catchError((error) {
-      print("Error fetching Organization data: $error");
+    }).catchError((error) {
+      if (kDebugMode) {
+        print("Error fetching User data: $error");
+      }
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error fetching Organization data: $error')),
+        SnackBar(content: Text('Error fetching User data: $error')),
       );
     });
   }
