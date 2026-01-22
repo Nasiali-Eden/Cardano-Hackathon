@@ -49,6 +49,7 @@ class _JoinCommunityScreenState extends State<JoinCommunityScreen> {
     });
 
     try {
+      print('[JoinCommunity] submit start');
       final communityAuth = CommunityAuthService();
       final user = await communityAuth.joinCommunity(
         name: _nameController.text.trim(),
@@ -57,6 +58,7 @@ class _JoinCommunityScreenState extends State<JoinCommunityScreen> {
         profilePhoto: _photo,
       );
 
+      print('[JoinCommunity] join completed, user=${user?.uid}');
       if (!mounted) return;
 
       if (user == null) {
@@ -69,10 +71,13 @@ class _JoinCommunityScreenState extends State<JoinCommunityScreen> {
       }
 
       Navigator.pushReplacementNamed(context, '/guidelines');
-    } catch (e) {
+    } catch (e, st) {
       if (!mounted) return;
+      // Log to console for debugging
+      print('[JoinCommunity] error: $e');
+      print(st);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
+        SnackBar(content: Text(e.toString())),
       );
     } finally {
       if (mounted) {

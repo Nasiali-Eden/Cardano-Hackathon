@@ -27,31 +27,62 @@ class CommunityAuthService {
     required String role,
     XFile? profilePhoto,
   }) async {
-    final credential = await _auth.signInAnonymously();
-    final user = credential.user;
-    if (user == null) return null;
+    try {
+      print('[CommunityAuth] join start');
+      final credential = await _auth.signInAnonymously();
+      final user = credential.user;
+      if (user == null) {
+        print('[CommunityAuth] signInAnonymously returned null user');
+        return null;
+      }
+      print('[CommunityAuth] signed in uid=${user.uid}');
 
-    String? photoUrl;
-    if (profilePhoto != null) {
-      final ref = _storage.ref().child(
-          'users/${user.uid}/profile_${DateTime.now().millisecondsSinceEpoch}.jpg');
-      await ref.putFile(File(profilePhoto.path));
-      photoUrl = await ref.getDownloadURL();
+      String? photoUrl;
+      if (profilePhoto != null) {
+        try {
+          final ref = _storage
+              .ref()
+              .child('users/${user.uid}/profile_${DateTime.now().millisecondsSinceEpoch}.jpg');
+          print('[CommunityAuth] uploading profile photo to ${ref.fullPath}');
+          await ref.putFile(File(profilePhoto.path));
+          photoUrl = await ref.getDownloadURL();
+          print('[CommunityAuth] profile photo uploaded');
+        } catch (e, st) {
+          print('[CommunityAuth] photo upload error: $e');
+          print(st);
+          // Continue without photo, but surface error to caller
+          rethrow;
+        }
+      }
+
+      final data = {
+        'name': name,
+        'location': location,
+        'role': role,
+        'photoUrl': photoUrl,
+        'impact_points': 0,
+        'createdAt': FieldValue.serverTimestamp(),
+        'guidelinesAcceptedAt': null,
+        'communityId': 'default',
+        'isPrototypeMode': true,
+      };
+      print('[CommunityAuth] writing user doc to Users/${user.uid} => $data');
+      await _db.collection('Users').doc(user.uid).set(
+            data,
+            SetOptions(merge: true),
+          );
+
+      print('[CommunityAuth] join completed for uid=${user.uid}');
+      return F_User(uid: user.uid);
+    } on FirebaseException catch (e, st) {
+      print('[CommunityAuth] FirebaseException: ${e.code} ${e.message}');
+      print(st);
+      rethrow;
+    } catch (e, st) {
+      print('[CommunityAuth] error: $e');
+      print(st);
+      rethrow;
     }
-
-    await _db.collection('Users').doc(user.uid).set({
-      'name': name,
-      'location': location,
-      'role': role,
-      'photoUrl': photoUrl,
-      'impact_points': 0,
-      'createdAt': FieldValue.serverTimestamp(),
-      'guidelinesAcceptedAt': null,
-      'communityId': 'default',
-      'isPrototypeMode': true,
-    }, SetOptions(merge: true));
-
-    return F_User(uid: user.uid);
   }
 
   Future<void> setGuidelinesAccepted({required String uid}) async {
