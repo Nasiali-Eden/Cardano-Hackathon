@@ -15,12 +15,14 @@ class AcknowledgementsScreen extends StatelessWidget {
 
     if (user == null) {
       return Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(title: const Text('Acknowledgements')),
         body: const Center(child: Text('Sign in to view acknowledgements')),
       );
     }
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(title: const Text('Acknowledgements')),
       body: StreamBuilder<List<Contribution>>(
         stream: ImpactService().watchUserContributions(userId: user.uid),
@@ -119,9 +121,8 @@ class _MilestoneTile extends StatelessWidget {
               : colorScheme.surfaceContainerHighest,
           child: Icon(
             item.reached ? Icons.check : Icons.timelapse,
-            color: item.reached
-                ? AppTheme.tertiary
-                : colorScheme.onSurfaceVariant,
+            color:
+                item.reached ? AppTheme.tertiary : colorScheme.onSurfaceVariant,
           ),
         ),
         title: Text(item.title),

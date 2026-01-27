@@ -13,6 +13,7 @@ class SettingsScreen extends StatelessWidget {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(title: const Text('Settings')),
       body: SafeArea(
         child: ListView(

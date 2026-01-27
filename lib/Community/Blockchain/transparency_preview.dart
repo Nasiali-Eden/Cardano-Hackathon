@@ -8,6 +8,7 @@ class TransparencyPreviewScreen extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(title: const Text('Transparency Preview')),
       body: SafeArea(
         child: ListView(

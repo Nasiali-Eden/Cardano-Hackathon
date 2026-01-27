@@ -46,7 +46,7 @@ class AppTheme {
           borderSide: BorderSide(color: primary, width: 2),
         ),
         filled: true,
-        fillColor: const Color(0xFFF0F7F4), // Very light green tint
+        fillColor: Colors.white,
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         prefixIconColor: accent,
@@ -62,9 +62,10 @@ class AppTheme {
         shadowColor: primary.withOpacity(0.1),
       ),
       chipTheme: ChipThemeData(
-        backgroundColor: lightGreen.withOpacity(0.2),
-        labelStyle: TextStyle(color: darkGreen, fontWeight: FontWeight.w500),
-        side: BorderSide(color: lightGreen),
+        backgroundColor: lightGreen.withOpacity(0.15),
+        labelStyle:
+            const TextStyle(color: darkGreen, fontWeight: FontWeight.w600),
+        side: BorderSide(color: primary.withOpacity(0.3)),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
@@ -96,32 +97,35 @@ class AppTheme {
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          foregroundColor: accent,
+          foregroundColor: primary,
           textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
       ),
       progressIndicatorTheme: ProgressIndicatorThemeData(
         color: primary,
-        circularTrackColor: lightGreen.withOpacity(0.3),
+        circularTrackColor: primary.withOpacity(0.2),
       ),
       dividerTheme: DividerThemeData(
-        color: lightGreen.withOpacity(0.3),
+        color: darkGreen.withOpacity(0.15),
         thickness: 1,
         space: 16,
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: Colors.white,
         selectedItemColor: primary,
-        unselectedItemColor: accent.withOpacity(0.5),
+        unselectedItemColor: darkGreen.withOpacity(0.4),
         type: BottomNavigationBarType.fixed,
         elevation: 8,
+        selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600),
       ),
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.transparent,
         indicatorColor: lightGreen.withOpacity(0.3),
+        elevation: 8,
         labelTextStyle: WidgetStateProperty.all(
-          const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+          const TextStyle(
+              fontSize: 12, fontWeight: FontWeight.w600, color: darkGreen),
         ),
       ),
       dialogTheme: DialogThemeData(

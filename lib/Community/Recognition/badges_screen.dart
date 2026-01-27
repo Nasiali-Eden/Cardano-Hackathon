@@ -16,12 +16,14 @@ class BadgesScreen extends StatelessWidget {
 
     if (user == null) {
       return Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(title: const Text('Badges')),
         body: const Center(child: Text('Sign in to view your badges')),
       );
     }
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(title: const Text('Badges')),
       body: StreamBuilder<int>(
         stream: ImpactService().watchUserImpactPoints(userId: user.uid),

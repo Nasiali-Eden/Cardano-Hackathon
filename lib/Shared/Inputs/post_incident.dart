@@ -73,6 +73,8 @@ class _PostIncidentState extends State<PostIncident> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       Navigator.of(context, rootNavigator: true)
@@ -80,7 +82,7 @@ class _PostIncidentState extends State<PostIncident> {
     });
 
     return Scaffold(
-      backgroundColor: Colors.grey[100], // Light background
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
         child: Form(
@@ -92,7 +94,7 @@ class _PostIncidentState extends State<PostIncident> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.teal[700],
+                  color: colorScheme.primary,
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: Center(

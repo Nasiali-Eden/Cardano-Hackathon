@@ -22,12 +22,14 @@ class AnnouncementDetailScreen extends StatelessWidget {
         final a = snapshot.data;
         if (a == null) {
           return Scaffold(
+            backgroundColor: Colors.white,
             appBar: AppBar(title: const Text('Announcement')),
             body: const Center(child: Text('Announcement not found')),
           );
         }
 
         return Scaffold(
+          backgroundColor: Colors.white,
           appBar: AppBar(
             title: const Text('Announcement'),
             actions: [

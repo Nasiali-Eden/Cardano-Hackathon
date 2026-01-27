@@ -10,6 +10,7 @@ class ContributionConfirmationScreen extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Contribution Submitted'),
         automaticallyImplyLeading: false,

@@ -23,6 +23,7 @@ class _NotificationCenterScreenState extends State<NotificationCenterScreen> {
 
     if (user == null) {
       return Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(title: const Text('Notifications')),
         body: const Center(child: Text('Sign in to view notifications')),
       );
@@ -31,6 +32,7 @@ class _NotificationCenterScreenState extends State<NotificationCenterScreen> {
     final unreadOnly = _tab == 1;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(title: const Text('Notifications')),
       body: Column(
         children: [

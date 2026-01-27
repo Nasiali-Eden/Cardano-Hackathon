@@ -76,6 +76,7 @@ class _ActivitiesListScreenState extends State<ActivitiesListScreen> {
     }
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Activities'),
         actions: [

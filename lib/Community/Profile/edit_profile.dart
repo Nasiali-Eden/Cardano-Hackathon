@@ -88,6 +88,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     final user = Provider.of<F_User?>(context);
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(title: const Text('Edit Profile')),
       body: SafeArea(
         child: _loading

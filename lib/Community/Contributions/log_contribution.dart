@@ -121,6 +121,7 @@ class _LogContributionScreenState extends State<LogContributionScreen> {
     final points = _estimate();
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Log Contribution'),
       ),

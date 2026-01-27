@@ -111,6 +111,7 @@ class _CreateActivityScreenState extends State<CreateActivityScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(title: const Text('Create Activity')),
       body: SafeArea(
         child: Padding(

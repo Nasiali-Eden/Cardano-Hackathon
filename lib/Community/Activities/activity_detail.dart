@@ -20,12 +20,14 @@ class ActivityDetailScreen extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(
+              backgroundColor: Colors.white,
               body: Center(child: CircularProgressIndicator()));
         }
 
         final activity = snapshot.data;
         if (activity == null) {
           return Scaffold(
+            backgroundColor: Colors.white,
             appBar: AppBar(title: const Text('Activity')),
             body: const Center(child: Text('Activity not found')),
           );
@@ -35,6 +37,7 @@ class ActivityDetailScreen extends StatelessWidget {
             user != null && activity.participantIds.contains(user.uid);
 
         return Scaffold(
+          backgroundColor: Colors.white,
           body: CustomScrollView(
             slivers: [
               SliverAppBar(

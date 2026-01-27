@@ -49,6 +49,7 @@ class _CommunityGuidelinesScreenState extends State<CommunityGuidelinesScreen> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Community Guidelines'),
       ),

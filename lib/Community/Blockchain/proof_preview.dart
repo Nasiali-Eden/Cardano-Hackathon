@@ -21,6 +21,7 @@ class ProofPreviewScreen extends StatelessWidget {
     final datum = _mockHash('datum_');
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(title: const Text('Proof Preview')),
       body: SafeArea(
         child: ListView(
