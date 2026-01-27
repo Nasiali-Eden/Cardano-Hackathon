@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../Models/user.dart';
 import '../../Services/Community/community_service.dart';
+import '../../Shared/theme/app_theme.dart';
 import '../Activities/activities_list.dart';
 import '../Impact/impact_dashboard.dart';
 import '../Profile/profile_screen.dart';
@@ -37,73 +38,78 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen> {
       const ProfileScreen(),
     ];
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Impact Ledger'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/notifications');
-            },
-            icon: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                const Icon(Icons.notifications_outlined),
-                Positioned(
-                  right: -1,
-                  top: -1,
-                  child: Container(
-                    width: 10,
-                    height: 10,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF3B82F6),
-                      borderRadius: BorderRadius.circular(10),
+    return WillPopScope(
+      onWillPop: () async => false, // Prevent back navigation from home
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Impact Ledger'),
+          automaticallyImplyLeading: false, // Remove back button
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/notifications');
+              },
+              icon: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  const Icon(Icons.notifications_outlined),
+                  Positioned(
+                    right: -1,
+                    top: -1,
+                    child: Container(
+                      width: 10,
+                      height: 10,
+                      decoration: BoxDecoration(
+                        color: AppTheme.accent,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          const SizedBox(width: 4),
-          Padding(
-            padding: const EdgeInsets.only(right: 12),
-            child: CircleAvatar(
-              radius: 18,
-              backgroundColor: colorScheme.surfaceContainerHighest,
-              child: Icon(Icons.person, color: colorScheme.onSurfaceVariant),
+            const SizedBox(width: 4),
+            Padding(
+              padding: const EdgeInsets.only(right: 12),
+              child: CircleAvatar(
+                radius: 18,
+                backgroundColor: colorScheme.surfaceContainerHighest,
+                child: Icon(Icons.person, color: colorScheme.onSurfaceVariant),
+              ),
             ),
-          ),
-        ],
-      ),
-      body: pages[_index],
-      floatingActionButton: _index != 1 || user == null
-          ? null
-          : FutureBuilder<String?>(
-              future: CommunityService().getUserRole(userId: user.uid),
-              builder: (context, snapshot) {
-                final role = snapshot.data ?? 'Member';
-                final isOrganizer = role == 'Organizer';
-                if (!isOrganizer) return const SizedBox.shrink();
+          ],
+        ),
+        body: pages[_index],
+        floatingActionButton: _index != 1 || user == null
+            ? null
+            : FutureBuilder<String?>(
+                future: CommunityService().getUserRole(userId: user.uid),
+                builder: (context, snapshot) {
+                  final role = snapshot.data ?? 'Member';
+                  final isOrganizer = role == 'Organizer';
+                  if (!isOrganizer) return const SizedBox.shrink();
 
-                return FloatingActionButton(
-                  onPressed: () =>
-                      Navigator.pushNamed(context, '/activities/create'),
-                  child: const Icon(Icons.add),
-                );
-              },
-            ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _index,
-        onDestinationSelected: (i) => setState(() => _index = i),
-        destinations: const [
-          NavigationDestination(icon: Icon(Icons.home_outlined), label: 'Home'),
-          NavigationDestination(
-              icon: Icon(Icons.event_note_outlined), label: 'Activities'),
-          NavigationDestination(
-              icon: Icon(Icons.analytics_outlined), label: 'Impact'),
-          NavigationDestination(
-              icon: Icon(Icons.person_outline), label: 'Profile'),
-        ],
+                  return FloatingActionButton(
+                    onPressed: () =>
+                        Navigator.pushNamed(context, '/activities/create'),
+                    child: const Icon(Icons.add),
+                  );
+                },
+              ),
+        bottomNavigationBar: NavigationBar(
+          selectedIndex: _index,
+          onDestinationSelected: (i) => setState(() => _index = i),
+          destinations: const [
+            NavigationDestination(
+                icon: Icon(Icons.home_outlined), label: 'Home'),
+            NavigationDestination(
+                icon: Icon(Icons.event_note_outlined), label: 'Activities'),
+            NavigationDestination(
+                icon: Icon(Icons.analytics_outlined), label: 'Impact'),
+            NavigationDestination(
+                icon: Icon(Icons.person_outline), label: 'Profile'),
+          ],
+        ),
       ),
     );
   }
@@ -151,7 +157,6 @@ class _HomeTabBody extends StatefulWidget {
 }
 
 class _HomeTabBodyState extends State<_HomeTabBody> {
-  bool _prototypeDismissed = false;
   int _feedLimit = 5;
 
   @override
@@ -163,45 +168,6 @@ class _HomeTabBodyState extends State<_HomeTabBody> {
       child: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          if (widget.userId != null && !_prototypeDismissed)
-            StreamBuilder<bool>(
-              stream:
-                  CommunityService().watchPrototypeMode(userId: widget.userId!),
-              builder: (context, snapshot) {
-                final isPrototype = snapshot.data ?? false;
-                if (!isPrototype) return const SizedBox.shrink();
-
-                return Container(
-                  margin: const EdgeInsets.only(bottom: 12),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                  decoration: BoxDecoration(
-                    color:
-                        const Color(0xFFF59E0B).withAlpha((0.20 * 255).toInt()),
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: const Color(0xFFF59E0B)),
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.warning_amber_rounded,
-                          size: 20, color: Color(0xFFF59E0B)),
-                      const SizedBox(width: 8),
-                      const Expanded(
-                        child: Text(
-                          'Prototype Mode',
-                          style: TextStyle(fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () =>
-                            setState(() => _prototypeDismissed = true),
-                        icon: const Icon(Icons.close, size: 18),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
           StreamBuilder<CommunityOverview>(
             stream: CommunityService().watchOverview(),
             builder: (context, snapshot) {
@@ -280,7 +246,7 @@ class _HomeTabBodyState extends State<_HomeTabBody> {
                 child: _QuickActionCard(
                   title: 'Log Contribution',
                   icon: Icons.add_circle,
-                  color: const Color(0xFF10B981),
+                  color: AppTheme.secondary,
                   onTap: widget.onLogContribution,
                 ),
               ),
@@ -289,7 +255,7 @@ class _HomeTabBodyState extends State<_HomeTabBody> {
                 child: _QuickActionCard(
                   title: 'View Impact',
                   icon: Icons.analytics,
-                  color: const Color(0xFF3B82F6),
+                  color: AppTheme.accent,
                   onTap: widget.onViewImpact,
                 ),
               ),

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../Models/app_notification.dart';
 import '../../Models/user.dart';
 import '../../Services/Notifications/notification_service.dart';
+import '../../Shared/theme/app_theme.dart';
 
 class NotificationCenterScreen extends StatefulWidget {
   const NotificationCenterScreen({super.key});
@@ -75,7 +76,7 @@ class _NotificationCenterScreenState extends State<NotificationCenterScreen> {
                         alignment: Alignment.centerLeft,
                         padding: const EdgeInsets.only(left: 16),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF10B981)
+                          color: AppTheme.secondary
                               .withAlpha((0.20 * 255).toInt()),
                           borderRadius: BorderRadius.circular(16),
                         ),
@@ -85,8 +86,7 @@ class _NotificationCenterScreenState extends State<NotificationCenterScreen> {
                         alignment: Alignment.centerRight,
                         padding: const EdgeInsets.only(right: 16),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFEF4444)
-                              .withAlpha((0.20 * 255).toInt()),
+                          color: Colors.red.withAlpha((0.20 * 255).toInt()),
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: const Icon(Icons.delete_outline),

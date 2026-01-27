@@ -84,7 +84,7 @@ dev_dependencies:
 # Configuration for Flutter Native Splash
 flutter_native_splash:
   color: "#ffffff" # White background
-  image: "assets/logo.png" # Your PNG logo for splash screen
+  image: "pngs/logotext.png" # Your PNG logo for splash screen
   android: true
   ios: true
   fullscreen: true # Ensures full-screen splash experience
@@ -93,7 +93,7 @@ flutter_native_splash:
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/logo.png" # Your app launcher icon
+  image_path: "pngs/logo.png" # Your app launcher icon
 
 # The following section is specific to Flutter packages.
 flutter:

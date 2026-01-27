@@ -70,7 +70,7 @@ class _JoinCommunityScreenState extends State<JoinCommunityScreen> {
         return;
       }
 
-      Navigator.pushReplacementNamed(context, '/guidelines');
+      Navigator.pushReplacementNamed(context, '/home');
     } catch (e, st) {
       if (!mounted) return;
       // Log to console for debugging
@@ -94,7 +94,11 @@ class _JoinCommunityScreenState extends State<JoinCommunityScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Join Community'),
+        title: Text('Join Community', style: Theme.of(context).textTheme.titleLarge),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pushReplacementNamed(context, '/home'),
+        ),
       ),
       body: SafeArea(
         child: Padding(

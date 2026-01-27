@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../Models/contribution.dart';
 import '../../Models/user.dart';
 import '../../Services/Impact/impact_service.dart';
+import '../../Shared/theme/app_theme.dart';
 
 class AcknowledgementsScreen extends StatelessWidget {
   const AcknowledgementsScreen({super.key});
@@ -114,12 +115,12 @@ class _MilestoneTile extends StatelessWidget {
       child: ListTile(
         leading: CircleAvatar(
           backgroundColor: item.reached
-              ? const Color(0xFF10B981).withAlpha((0.12 * 255).toInt())
+              ? AppTheme.tertiary.withAlpha((0.12 * 255).toInt())
               : colorScheme.surfaceContainerHighest,
           child: Icon(
             item.reached ? Icons.check : Icons.timelapse,
             color: item.reached
-                ? const Color(0xFF10B981)
+                ? AppTheme.tertiary
                 : colorScheme.onSurfaceVariant,
           ),
         ),

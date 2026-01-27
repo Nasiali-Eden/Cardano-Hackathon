@@ -5,6 +5,7 @@ import '../../Models/activity.dart';
 import '../../Models/user.dart';
 import '../../Services/Activities/activity_service.dart';
 import '../../Services/Community/community_service.dart';
+import '../../Shared/theme/app_theme.dart';
 
 class ActivitiesListScreen extends StatefulWidget {
   final bool embedded;
@@ -138,11 +139,11 @@ class _ActivityCard extends StatelessWidget {
     Color statusColor(String status) {
       switch (status) {
         case 'Ongoing':
-          return const Color(0xFF3B82F6);
+          return AppTheme.accent; // Teal - active state
         case 'Completed':
-          return const Color(0xFF10B981);
+          return AppTheme.tertiary; // Gold - success/achievement
         default:
-          return const Color(0xFFF59E0B);
+          return AppTheme.secondary; // Medium Green - pending/neutral
       }
     }
 

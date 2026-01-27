@@ -1,5 +1,5 @@
-Impact Ledger – App UI and Functional Overview
 
+"Canopy - Community-Verified Environmental Action"
 Purpose
 - This document summarizes the current Flutter app’s UI screens, navigation, and core functions to help an AI (or developer) understand the project structure before refactors.
 
