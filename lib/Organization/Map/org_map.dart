@@ -378,27 +378,13 @@ class _OrgMapState extends State<OrgMap> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
+       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         toolbarHeight: 68,
         centerTitle: true,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: Container(
-            margin: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: AppTheme.primary.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(
-              Icons.eco_outlined,
-              color: AppTheme.primary,
-              size: 22,
-            ),
-          ),
-        ),
+      
         title: Text(
           'Canopy',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -407,74 +393,8 @@ class _OrgMapState extends State<OrgMap> {
                 fontSize: 22,
               ),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/notifications');
-            },
-            icon: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                Icon(
-                  Icons.notifications_outlined,
-                  color: AppTheme.darkGreen,
-                  size: 24,
-                ),
-                Positioned(
-                  right: 0,
-                  top: 0,
-                  child: Container(
-                    width: 8,
-                    height: 8,
-                    decoration: BoxDecoration(
-                      color: AppTheme.tertiary,
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white, width: 1.5),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 4),
-          Padding(
-            padding: const EdgeInsets.only(right: 16),
-            child: Builder(
-              builder: (context) {
-                final userName = "Organization Member";
-                final initials = _getInitials(userName);
-
-                return Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: AppTheme.primary,
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppTheme.primary.withOpacity(0.3),
-                        blurRadius: 8,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Center(
-                    child: Text(
-                      initials.isNotEmpty ? initials : '?',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-      body: Stack(
+    ),
+     body: Stack(
         children: [
           // Google Map
           GoogleMap(

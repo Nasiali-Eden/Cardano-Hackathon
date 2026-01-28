@@ -54,11 +54,21 @@ class _DashboardContent extends StatelessWidget {
   final FirebaseFirestore firestore;
   const _DashboardContent({required this.firestore});
 
+  String _getInitials(String? name) {
+    if (name == null || name.trim().isEmpty) return '';
+    final trimmed = name.trim();
+    final words = trimmed.split(' ');
+    if (words.length == 1) {
+      return words[0][0].toUpperCase();
+    }
+    return (words[0][0] + words[words.length - 1][0]).toUpperCase();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
+   body: SingleChildScrollView(
         child: Column(
           children: [
             _buildHeader(context),

@@ -16,21 +16,6 @@ class OrganizationHome extends StatefulWidget {
 class _OrganizationHomeState extends State<OrganizationHome> {
   int _index = 0;
 
-
-  late final List<Widget> pages;
-
-  @override
-  void initState() {
-    super.initState();
-    pages = [
-      const OrgDashboard(),
-       OrgTeam(),
-      const OrgVolunteers(),
-      const OrgMap(),
-      const OrgProfile(),
-    ];
-  }
-
   void _showCreateTeamDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -58,6 +43,14 @@ class _OrganizationHomeState extends State<OrganizationHome> {
 
   @override
   Widget build(BuildContext context) {
+    final pages = [
+      const OrgDashboard(),
+      const OrgTeam(),
+      const OrgVolunteers(),
+      const OrgMap(),
+      const OrgProfile(),
+    ];
+
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
