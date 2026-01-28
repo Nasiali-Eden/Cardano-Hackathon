@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../Shared/theme/app_theme.dart';
 
 class AddTeam extends StatefulWidget {
   const AddTeam({super.key});
@@ -57,34 +58,23 @@ class _AddTeamState extends State<AddTeam> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: PreferredSize(
-        preferredSize:
-            const Size.fromHeight(56.0), // Set the height of the AppBar
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.deepPurpleAccent.withAlpha(
-                    (0.05 * 255).toInt()), // Shadow color with opacity
-                blurRadius: 4.0, // Adjust the blur radius
-                offset: Offset(0, 3), // Position of the shadow
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        surfaceTintColor: Colors.transparent,
+        toolbarHeight: 68,
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new, color: AppTheme.darkGreen, size: 20),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text(
+          'Add New Team',
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                color: AppTheme.darkGreen,
+                fontWeight: FontWeight.w700,
+                fontSize: 20,
               ),
-            ],
-          ),
-          child: AppBar(
-            backgroundColor:
-                Colors.transparent, // Make the AppBar background transparent
-            elevation: 0, // Remove default shadow
-            title: Text(
-              'Edit Teams',
-              style: TextStyle(
-                color: Colors.deepPurpleAccent,
-                fontWeight: FontWeight.w500,
-                fontSize: 22,
-              ),
-            ),
-          ),
         ),
       ),
       body: SingleChildScrollView(

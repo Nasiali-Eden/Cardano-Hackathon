@@ -23,6 +23,7 @@ import 'Community/Profile/settings_screen.dart';
 import 'Community/Blockchain/blockchain_settings.dart';
 import 'Community/Blockchain/proof_preview.dart';
 import 'Community/Blockchain/transparency_preview.dart';
+import 'Organization/Home/org_home.dart';
 import 'Models/user.dart';
 import 'Providers/theme_provider.dart';
 import 'Services/Authentication/auth.dart';
@@ -160,9 +161,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        // CRITICAL FIX: Use a custom stream that doesn't trigger rebuilds
+        // We provide the user stream but don't use it for automatic routing
         StreamProvider<F_User?>.value(
           value: AuthService().user,
           initialData: null,
+          // This prevents automatic navigation on auth state changes
+          catchError: (context, error) {
+            debugPrint('Auth stream error: $error');
+            return null;
+          },
         ),
         ChangeNotifierProvider(
           create: (_) {
@@ -180,84 +188,57 @@ class MyApp extends StatelessWidget {
             theme: AppTheme.light(),
             darkTheme: AppTheme.dark(),
             themeMode: themeProvider.mode,
-            initialRoute: '/splash',
+            // CRITICAL: Start at splash and use direct navigation from there
+            // This prevents the app from auto-routing on auth changes
+            home: const SplashScreen(),
+            // Keep routes for nested navigation within the app
+            routes: {
+              '/activities': (context) => const ActivitiesListScreen(),
+              '/activities/create': (context) => const CreateActivityScreen(),
+              '/contributions/log': (context) => const LogContributionScreen(),
+              '/impact': (context) => const ImpactDashboardScreen(),
+              '/recognition/badges': (context) => const BadgesScreen(),
+              '/recognition/acknowledgements': (context) => const AcknowledgementsScreen(),
+              '/announcements': (context) => const AnnouncementsListScreen(),
+              '/notifications': (context) => const NotificationCenterScreen(),
+              '/settings': (context) => const SettingsScreen(),
+              '/profile/edit': (context) => const EditProfileScreen(),
+              '/community/info': (context) => const CommunityInfoScreen(),
+              '/roadmap': (context) => const RoadmapScreen(),
+              '/blockchain/transparency': (context) => const TransparencyPreviewScreen(),
+              '/blockchain/proof': (context) => const ProofPreviewScreen(),
+              '/dev/blockchain': (context) => const BlockchainDevSettingsScreen(),
+            },
             onGenerateRoute: (settings) {
-              final name = settings.name ?? '/splash';
+              final name = settings.name ?? '/';
 
-              Widget page;
-
-              // These routes should not have theme app styling
-              if (name == '/splash') {
-                page = const SplashScreen();
-              } else if (name == '/welcome') {
-                page = const WelcomeScreen();
-              } else if (name == '/login') {
-                page = const LoginPage();
-              } else if (name == '/join') {
-                page = const JoinCommunityScreen();
-              } else if (name == '/guidelines') {
-                page = const CommunityGuidelinesScreen();
-              }
-              // Authenticated routes
-              else if (name == '/home') {
-                page = const CommunityHomeScreen();
-              } else if (name == '/activities') {
-                page = const ActivitiesListScreen();
-              } else if (name == '/activities/create') {
-                page = const CreateActivityScreen();
-              } else if (name.startsWith('/activities/')) {
+              // Handle routes with parameters
+              if (name.startsWith('/activities/') && name != '/activities/create') {
                 final parts = name.split('/');
                 final id = parts.isNotEmpty ? parts.last : '';
-                page = ActivityDetailScreen(activityId: id);
-              } else if (name == '/contributions/log') {
-                page = const LogContributionScreen();
+                return MaterialPageRoute(
+                  builder: (context) => ActivityDetailScreen(activityId: id),
+                  settings: settings,
+                );
+              } else if (name.startsWith('/announcements/')) {
+                final parts = name.split('/');
+                final id = parts.isNotEmpty ? parts.last : '';
+                return MaterialPageRoute(
+                  builder: (context) => AnnouncementDetailScreen(announcementId: id),
+                  settings: settings,
+                );
               } else if (name == '/contributions/confirm') {
                 final args = settings.arguments;
                 final points = (args is Map && args['points'] is int)
                     ? args['points'] as int
                     : 0;
-                page = ContributionConfirmationScreen(points: points);
-              } else if (name == '/impact') {
-                page = const ImpactDashboardScreen();
-              } else if (name == '/recognition/badges') {
-                page = const BadgesScreen();
-              } else if (name == '/recognition/acknowledgements') {
-                page = const AcknowledgementsScreen();
-              } else if (name == '/announcements') {
-                page = const AnnouncementsListScreen();
-              } else if (name.startsWith('/announcements/')) {
-                final parts = name.split('/');
-                final id = parts.isNotEmpty ? parts.last : '';
-                page = AnnouncementDetailScreen(announcementId: id);
-              } else if (name == '/notifications') {
-                page = const NotificationCenterScreen();
-              } else if (name == '/settings') {
-                page = const SettingsScreen();
-              } else if (name == '/profile/edit') {
-                page = const EditProfileScreen();
-              } else if (name == '/community/info') {
-                page = const CommunityInfoScreen();
-              } else if (name == '/roadmap') {
-                page = const RoadmapScreen();
-              } else if (name == '/blockchain/transparency') {
-                page = const TransparencyPreviewScreen();
-              } else if (name == '/blockchain/proof') {
-                page = const ProofPreviewScreen();
-              } else if (name == '/dev/blockchain') {
-                page = const BlockchainDevSettingsScreen();
-              } else {
-                page = const SplashScreen();
+                return MaterialPageRoute(
+                  builder: (context) => ContributionConfirmationScreen(points: points),
+                  settings: settings,
+                );
               }
 
-              return PageRouteBuilder(
-                settings: settings,
-                pageBuilder: (context, animation, secondaryAnimation) => page,
-                transitionsBuilder:
-                    (context, animation, secondaryAnimation, child) {
-                  return FadeTransition(opacity: animation, child: child);
-                },
-                transitionDuration: const Duration(milliseconds: 350),
-              );
+              return null;
             },
           );
         },

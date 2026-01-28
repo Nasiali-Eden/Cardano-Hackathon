@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-
 import '../../../Services/Authentication/auth.dart';
 import '../../../Shared/Pages/login.dart';
+import '../../../Shared/theme/app_theme.dart';
 
 class OrgProfile extends StatefulWidget {
   const OrgProfile({super.key});
@@ -13,376 +13,646 @@ class OrgProfile extends StatefulWidget {
 class _OrgProfileState extends State<OrgProfile> {
   final AuthService _authService = AuthService();
 
-  Color maroon = Color(0xFFD52020);
+  String _getInitials(String? name) {
+    if (name == null || name.trim().isEmpty) return '';
+    final trimmed = name.trim();
+    final words = trimmed.split(' ');
+    if (words.length == 1) {
+      return words[0][0].toUpperCase();
+    }
+    return (words[0][0] + words[words.length - 1][0]).toUpperCase();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
         backgroundColor: Colors.white,
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(56.0), // Set the height of the AppBar
+        elevation: 0,
+        surfaceTintColor: Colors.transparent,
+        toolbarHeight: 68,
+        centerTitle: true,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 16),
           child: Container(
+            margin: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.deepPurpleAccent.withAlpha(
-                      (0.05 * 255).toInt()), // Shadow color with opacity
-                  blurRadius: 4.0, // Adjust the blur radius
-                  offset: Offset(0, 3), // Position of the shadow
+              color: AppTheme.primary.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(
+              Icons.eco_outlined,
+              color: AppTheme.primary,
+              size: 22,
+            ),
+          ),
+        ),
+        title: Text(
+          'Canopy',
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                color: AppTheme.darkGreen,
+                fontWeight: FontWeight.w700,
+                fontSize: 22,
+              ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/notifications');
+            },
+            icon: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Icon(
+                  Icons.notifications_outlined,
+                  color: AppTheme.darkGreen,
+                  size: 24,
+                ),
+                Positioned(
+                  right: 0,
+                  top: 0,
+                  child: Container(
+                    width: 8,
+                    height: 8,
+                    decoration: BoxDecoration(
+                      color: AppTheme.tertiary,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.white, width: 1.5),
+                    ),
+                  ),
                 ),
               ],
             ),
-            child: AppBar(
-              backgroundColor:
-                  Colors.transparent, // Make the AppBar background transparent
-              elevation: 0, // Remove default shadow
-              title: Text(
-                'Profile',
-                style: TextStyle(
-                  color: Colors.deepPurpleAccent,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 22,
+          ),
+          const SizedBox(width: 4),
+          Padding(
+            padding: const EdgeInsets.only(right: 16),
+            child: Builder(
+              builder: (context) {
+                final userName = "Organization Member";
+                final initials = _getInitials(userName);
+
+                return Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: AppTheme.primary,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppTheme.primary.withOpacity(0.3),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Center(
+                    child: Text(
+                      initials.isNotEmpty ? initials : '?',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(height: 20),
+            _buildHeader(context),
+            const SizedBox(height: 24),
+            _buildOrganizationInfo(context),
+            const SizedBox(height: 24),
+            _buildAccountSection(context),
+            const SizedBox(height: 16),
+            _buildNotificationsSection(context),
+            const SizedBox(height: 16),
+            _buildSupportSection(context),
+            const SizedBox(height: 24),
+            _buildSignOutButton(context),
+            const SizedBox(height: 100),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeader(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        children: [
+          Container(
+            width: 100,
+            height: 100,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [AppTheme.primary, AppTheme.secondary],
+              ),
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: AppTheme.primary.withOpacity(0.3),
+                  blurRadius: 15,
+                  offset: const Offset(0, 5),
                 ),
+              ],
+            ),
+            child: const Icon(
+              Icons.business,
+              size: 50,
+              color: Colors.white,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'Green Earth Initiative',
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  color: AppTheme.darkGreen,
+                  fontWeight: FontWeight.w700,
+                ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 8),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              color: AppTheme.primary.withOpacity(0.15),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.verified, color: AppTheme.primary, size: 16),
+                const SizedBox(width: 6),
+                Text(
+                  'Active Organization',
+                  style: TextStyle(
+                    color: AppTheme.primary,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 13,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildOrganizationInfo(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: AppTheme.lightGreen.withOpacity(0.3)),
+          boxShadow: [
+            BoxShadow(
+              color: AppTheme.primary.withOpacity(0.08),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Organization Details',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: AppTheme.darkGreen,
+                        fontWeight: FontWeight.w700,
+                      ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    // TODO: Navigate to edit organization details
+                  },
+                  icon: Icon(Icons.edit, color: AppTheme.primary, size: 20),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            _InfoRow(
+              icon: Icons.category,
+              label: 'Type',
+              value: 'Environmental NGO',
+            ),
+            const SizedBox(height: 12),
+            _InfoRow(
+              icon: Icons.location_on,
+              label: 'Operating Area',
+              value: 'Nairobi, Kenya',
+            ),
+            const SizedBox(height: 12),
+            _InfoRow(
+              icon: Icons.calendar_today,
+              label: 'Established',
+              value: 'January 2020',
+            ),
+            const SizedBox(height: 12),
+            _InfoRow(
+              icon: Icons.people,
+              label: 'Team Size',
+              value: '24 Members',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAccountSection(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 4, bottom: 8),
+            child: Text(
+              'Account Management',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: AppTheme.darkGreen,
+                    fontWeight: FontWeight.w700,
+                  ),
+            ),
+          ),
+          _SettingsCard(
+            items: [
+              _SettingsItem(
+                icon: Icons.account_circle,
+                title: 'Account Details',
+                onTap: () {
+                  // TODO: Navigate to account details
+                },
+              ),
+              _SettingsItem(
+                icon: Icons.lock,
+                title: 'Password and Security',
+                onTap: () {
+                  // TODO: Navigate to security settings
+                },
+              ),
+              _SettingsItem(
+                icon: Icons.location_city,
+                title: 'Organization Address',
+                onTap: () {
+                  // TODO: Navigate to address settings
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNotificationsSection(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 4, bottom: 8),
+            child: Text(
+              'Notifications',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: AppTheme.darkGreen,
+                    fontWeight: FontWeight.w700,
+                  ),
+            ),
+          ),
+          _SettingsCard(
+            items: [
+              _SettingsItem(
+                icon: Icons.email,
+                title: 'Email Notifications',
+                onTap: () {
+                  // TODO: Navigate to email notification settings
+                },
+              ),
+              _SettingsItem(
+                icon: Icons.notifications,
+                title: 'Push Notifications',
+                onTap: () {
+                  // TODO: Navigate to push notification settings
+                },
+              ),
+              _SettingsItem(
+                icon: Icons.notifications_off,
+                title: 'Manage Preferences',
+                onTap: () {
+                  // TODO: Navigate to notification preferences
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSupportSection(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 4, bottom: 8),
+            child: Text(
+              'Support & Information',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: AppTheme.darkGreen,
+                    fontWeight: FontWeight.w700,
+                  ),
+            ),
+          ),
+          _SettingsCard(
+            items: [
+              _SettingsItem(
+                icon: Icons.help_outline,
+                title: 'Help Center',
+                onTap: () {
+                  // TODO: Navigate to help center
+                },
+              ),
+              _SettingsItem(
+                icon: Icons.info_outline,
+                title: 'About Canopy',
+                onTap: () {
+                  // TODO: Navigate to about page
+                },
+              ),
+              _SettingsItem(
+                icon: Icons.privacy_tip_outlined,
+                title: 'Privacy Policy',
+                onTap: () {
+                  // TODO: Navigate to privacy policy
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSignOutButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.red.shade200),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.red.withOpacity(0.1),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(16),
+            onTap: () async {
+              final shouldSignOut = await showDialog<bool>(
+                context: context,
+                builder: (context) => AlertDialog(
+                  backgroundColor: Colors.white,
+                  title: Text(
+                    'Sign Out',
+                    style: TextStyle(
+                      color: AppTheme.darkGreen,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  content: Text(
+                    'Are you sure you want to sign out?',
+                    style: TextStyle(color: AppTheme.darkGreen),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, false),
+                      child: Text(
+                        'Cancel',
+                        style: TextStyle(color: AppTheme.darkGreen),
+                      ),
+                    ),
+                    FilledButton(
+                      onPressed: () => Navigator.pop(context, true),
+                      style: FilledButton.styleFrom(
+                        backgroundColor: Colors.red,
+                      ),
+                      child: const Text('Sign Out'),
+                    ),
+                  ],
+                ),
+              );
+
+              if (shouldSignOut == true) {
+                await _authService.signOut();
+                if (!mounted) return;
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginPage()),
+                );
+              }
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.red.shade50,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Icon(Icons.logout, color: Colors.red, size: 20),
+                  ),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: Text(
+                      'Sign Out',
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: Colors.red,
+                          ),
+                    ),
+                  ),
+                  Icon(Icons.chevron_right, color: Colors.red),
+                ],
               ),
             ),
           ),
         ),
-        body: SingleChildScrollView(
+      ),
+    );
+  }
+}
+
+class _InfoRow extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final String value;
+
+  const _InfoRow({
+    required this.icon,
+    required this.label,
+    required this.value,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: AppTheme.lightGreen.withOpacity(0.2),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Icon(icon, color: AppTheme.primary, size: 18),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 12), // Add spacing at the top
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Divider(
-                        thickness: 0.05,
-                        color: Colors.deepPurpleAccent,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Text(
-                        'Account Management',
-                        style: TextStyle(
-                            color: Colors.deepPurpleAccent,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                    Expanded(
-                      child: Divider(
-                          thickness: 0.08, color: Colors.deepPurpleAccent),
-                    ),
-                  ],
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: AppTheme.darkGreen.withOpacity(0.6),
                 ),
               ),
-              SizedBox(
-                height: 3,
+              const SizedBox(height: 2),
+              Text(
+                value,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: AppTheme.darkGreen,
+                    ),
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 15, vertical: 10), // Adjust padding
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(6),
-                  color: Colors.grey[50],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            "Account Details",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          size: 16,
-                          color: Colors.black54,
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 6.0,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            "Password and Security",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          size: 16,
-                          color: Colors.black54,
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 6.0,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            "Add address",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          size: 16,
-                          color: Colors.black54,
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 6.0,
-                    ),
-                  ],
-                ),
-              ),
-
-              SizedBox(
-                height: 10,
-              ),
-
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Divider(
-                        thickness: 0.08,
-                        color: Colors.teal[600],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Text(
-                        'Notifications',
-                        style: TextStyle(
-                            color: Colors.deepPurpleAccent,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                    Expanded(
-                      child: Divider(
-                        thickness: 0.08,
-                        color: Colors.teal[600],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 3,
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 15, vertical: 10), // Adjust padding
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(6),
-                  color: Colors.grey[50],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            "Email Notifications",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          size: 16,
-                          color: Colors.black54,
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 6.0,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            "Daily Notifications",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          size: 16,
-                          color: Colors.black54,
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 6.0,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            "Turn off",
-                            style: TextStyle(
-                              color: maroon,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          size: 16,
-                          color: Colors.black54,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Divider(
-                        thickness: 0.08,
-                        color: Colors.teal[600],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Text(
-                        'About Impact Ledger',
-                        style: TextStyle(
-                            color: Colors.deepPurpleAccent,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                    Expanded(
-                      child: Divider(
-                        thickness: 0.08,
-                        color: Colors.teal[600],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 15, vertical: 10), // Adjust padding
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(6),
-                  color: Colors.grey[50],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            "How to log a contribution",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          size: 16,
-                          color: Colors.black54,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-
-              GestureDetector(
-                onTap: () async {
-                  await _authService.signOut();
-                  if (!mounted)
-                    return; // Prevents calling setState after dispose
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginPage()),
-                  );
-                },
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 12, vertical: 8), // Adjust padding
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(6),
-                    color: Colors.grey[50],
-                  ),
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                        child: Text(
-                          'Sign Out',
-                          style: TextStyle(color: maroon),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ), // You can add more widgets here as needed
             ],
           ),
-        ));
+        ),
+      ],
+    );
   }
+}
+
+class _SettingsCard extends StatelessWidget {
+  final List<_SettingsItem> items;
+
+  const _SettingsCard({required this.items});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppTheme.lightGreen.withOpacity(0.3)),
+        boxShadow: [
+          BoxShadow(
+            color: AppTheme.primary.withOpacity(0.08),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        children: items.asMap().entries.map((entry) {
+          final index = entry.key;
+          final item = entry.value;
+          final isLast = index == items.length - 1;
+
+          return Column(
+            children: [
+              Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  borderRadius: BorderRadius.vertical(
+                    top: index == 0 ? const Radius.circular(16) : Radius.zero,
+                    bottom: isLast ? const Radius.circular(16) : Radius.zero,
+                  ),
+                  onTap: item.onTap,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: AppTheme.lightGreen.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Icon(item.icon, color: AppTheme.primary, size: 20),
+                        ),
+                        const SizedBox(width: 14),
+                        Expanded(
+                          child: Text(
+                            item.title,
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  color: AppTheme.darkGreen,
+                                ),
+                          ),
+                        ),
+                        Icon(Icons.chevron_right, color: AppTheme.primary),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              if (!isLast)
+                Padding(
+                  padding: const EdgeInsets.only(left: 62),
+                  child: Divider(
+                    height: 1,
+                    color: AppTheme.lightGreen.withOpacity(0.2),
+                  ),
+                ),
+            ],
+          );
+        }).toList(),
+      ),
+    );
+  }
+}
+
+class _SettingsItem {
+  final IconData icon;
+  final String title;
+  final VoidCallback onTap;
+
+  _SettingsItem({
+    required this.icon,
+    required this.title,
+    required this.onTap,
+  });
 }

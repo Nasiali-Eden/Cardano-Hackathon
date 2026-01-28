@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:uuid/uuid.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -21,6 +21,174 @@ class CommunityAuthService {
         _db = db ?? FirebaseFirestore.instance,
         _storage = storage ?? FirebaseStorage.instance;
 
+  Future<F_User?> registerAsOrganization({
+    required String email,
+    required String password,
+    required String orgName,
+    required String orgRepName,
+    required String background,
+    required List<String> mainFunctions,
+    required String orgDesignation,
+    XFile? profilePhoto,
+  }) async {
+    try {
+      print('[CommunityAuth] registerAsOrganization start');
+      final credential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      final user = credential.user;
+      if (user == null) {
+        print(
+            '[CommunityAuth] createUserWithEmailAndPassword returned null user');
+        return null;
+      }
+      print('[CommunityAuth] organization registered uid=${user.uid}');
+
+      // Generate UUID for organization ID
+      const uuid = Uuid();
+      final orgId = uuid.v4();
+
+      String? profilePhotoUrl;
+      if (profilePhoto != null) {
+        try {
+          final ref = _storage.ref().child(
+              'organizations/$orgId/profile_${DateTime.now().millisecondsSinceEpoch}.jpg');
+          print(
+              '[CommunityAuth] uploading org profile photo to ${ref.fullPath}');
+          await ref.putFile(File(profilePhoto.path));
+          profilePhotoUrl = await ref.getDownloadURL();
+          print('[CommunityAuth] org profile photo uploaded');
+        } catch (e, st) {
+          print('[CommunityAuth] photo upload error: $e');
+          print(st);
+          // Continue without photo
+        }
+      }
+
+      // Save to org_rep collection (indexed by uid)
+      final orgRepData = {
+        'uid': user.uid,
+        'email': email,
+        'name': orgRepName,
+        'org_name': orgName,
+        'createdAt': FieldValue.serverTimestamp(),
+      };
+
+      print(
+          '[CommunityAuth] writing org rep doc to org_rep/${user.uid} => $orgRepData');
+      await _db.collection('org_rep').doc(user.uid).set(orgRepData);
+
+      // Save to organizations collection (full organization data)
+      final organizationsData = {
+        'orgId': orgId,
+        'org_name': orgName,
+        'org_rep_name': orgRepName,
+        'org_rep_uid': user.uid,
+        'email': email,
+        'background': background,
+        'mainFunctions': mainFunctions,
+        'orgDesignation': orgDesignation,
+        'profilePhoto': profilePhotoUrl,
+        'createdAt': FieldValue.serverTimestamp(),
+        'guidelinesAcceptedAt': null,
+        'type': 'Org Rep',
+        'impact_points': 0,
+        'communityId': 'default',
+      };
+
+      print(
+          '[CommunityAuth] writing organization doc to organizations/$orgId => $organizationsData');
+      await _db.collection('organizations').doc(orgId).set(organizationsData);
+
+      // Also update the Users collection for backwards compatibility
+      await _db.collection('Users').doc(user.uid).set(
+        {
+          'name': orgRepName,
+          'email': email,
+          'role': 'Org Rep',
+          'orgId': orgId,
+          'orgName': orgName,
+          'createdAt': FieldValue.serverTimestamp(),
+          'guidelinesAcceptedAt': null,
+          'impact_points': 0,
+          'communityId': 'default',
+          'isPrototypeMode': true,
+        },
+        SetOptions(merge: true),
+      );
+
+      print(
+          '[CommunityAuth] organization registration completed for uid=${user.uid}');
+      return F_User(uid: user.uid);
+    } on FirebaseException catch (e, st) {
+      print('[CommunityAuth] FirebaseException: ${e.code} ${e.message}');
+      print(st);
+      rethrow;
+    } catch (e, st) {
+      print('[CommunityAuth] error: $e');
+      print(st);
+      rethrow;
+    }
+  }
+
+  Future<F_User?> registerWithEmail({
+    required String name,
+    required String email,
+    required String password,
+    required String role,
+  }) async {
+    try {
+      print('[CommunityAuth] registerWithEmail start');
+      final credential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      final user = credential.user;
+      if (user == null) {
+        print(
+            '[CommunityAuth] createUserWithEmailAndPassword returned null user');
+        return null;
+      }
+      print('[CommunityAuth] registered uid=${user.uid}');
+
+      // Save to members collection ordered by UID
+      final data = {
+        'name': name,
+        'email': email,
+        'role': role,
+        if (role == 'Volunteer') 'volunteer': true,
+        'createdAt': FieldValue.serverTimestamp(),
+        'guidelinesAcceptedAt': null,
+        'impact_points': 0,
+        'communityId': 'default',
+      };
+
+      print('[CommunityAuth] writing user doc to members/${user.uid} => $data');
+      await _db.collection('members').doc(user.uid).set(data);
+
+      // Also update the Users collection for backwards compatibility
+      await _db.collection('Users').doc(user.uid).set(
+        {
+          ...data,
+          'isPrototypeMode': true,
+        },
+        SetOptions(merge: true),
+      );
+
+      print('[CommunityAuth] registration completed for uid=${user.uid}');
+      return F_User(uid: user.uid);
+    } on FirebaseException catch (e, st) {
+      print('[CommunityAuth] FirebaseException: ${e.code} ${e.message}');
+      print(st);
+      rethrow;
+    } catch (e, st) {
+      print('[CommunityAuth] error: $e');
+      print(st);
+      rethrow;
+    }
+  }
+
   Future<F_User?> joinCommunity({
     required String name,
     required String location,
@@ -40,9 +208,8 @@ class CommunityAuthService {
       String? photoUrl;
       if (profilePhoto != null) {
         try {
-          final ref = _storage
-              .ref()
-              .child('users/${user.uid}/profile_${DateTime.now().millisecondsSinceEpoch}.jpg');
+          final ref = _storage.ref().child(
+              'users/${user.uid}/profile_${DateTime.now().millisecondsSinceEpoch}.jpg');
           print('[CommunityAuth] uploading profile photo to ${ref.fullPath}');
           await ref.putFile(File(profilePhoto.path));
           photoUrl = await ref.getDownloadURL();

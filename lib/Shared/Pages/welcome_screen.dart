@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../Shared/theme/app_theme.dart';
+import '../Authentication/join_community.dart';
+import 'login.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -97,14 +99,22 @@ class WelcomeScreen extends StatelessWidget {
                 const SizedBox(height: 12),
                 FilledButton(
                   onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/join');
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => const JoinCommunityScreen(),
+                      ),
+                    );
                   },
                   child: const Text('Get Started'),
                 ),
                 const SizedBox(height: 8),
                 TextButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/login');
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const LoginPage(),
+                      ),
+                    );
                   },
                   child: const Text('Already a member? Sign In'),
                 ),
